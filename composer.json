@@ -1,0 +1,26 @@
+{
+    "name": "martuu/tiendecita",
+    "description": "Proyecto tienda php",
+    "autoload": {
+        "psr-4": {
+            "Martuu\\Tiendecita\\": "src/",
+            "Views\\": "./src/Views/",
+            "Controllers\\": "./src/Controllers/",
+            "Models\\": "./src/Models/",
+            "Routes\\": "./src/Routes/",
+            "Services\\": "./src/Services/",
+            "Lib\\":"./src/Lib/",
+            "Repositories\\":"./src/Repositories/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marta Marín Lorente",
+            "email": "martamarinlorente@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
