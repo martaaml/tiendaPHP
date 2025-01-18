@@ -21,6 +21,10 @@
                 </td>
             </tr>
         </table>
+        <form action="<?=BASE_URL?>categorias" method="post">
+            <input type="text" name="nombre" id="nombre" required>
+            <input type="submit" value="Crear categoria">
+        </form>
     </div>
     <div v-if="verProd">
         <h2>Gestion de productos</h2>
@@ -56,6 +60,17 @@
 
             </tr>
         </table>
+        <form action="<?=BASE_URL?>productos" method="post">
+            <input type="text" name="categoria_id" id="categoria_id" required>
+            <input type="text" name="nombre" id="nombre" required>
+            <input type="text" name="descripcion" id="descripcion" required>
+            <input type="text" name="precio" id="precio" required>
+            <input type="text" name="stock" id="stock" required>
+            <input type="text" name="oferta" id="oferta" required>
+            <input type="text" name="fecha" id="fecha" required>
+            <input type="text" name="imagen" id="imagen" required>
+            <input type="submit" value="Crear producto">    
+        </form>
     </div>
     <div v-if="verPed">
         <h2>Gestion de pedidos</h2>
@@ -106,7 +121,7 @@
         verPed:false,
         categorias: <?php echo json_encode($categorias); ?>,
         products: <?php echo json_encode($products); ?>,
-        pedido: <?php echo json_encode($pedido); ?>
+        pedidos: <?php echo json_encode($pedidos); ?>
       }
     },
     methods: {

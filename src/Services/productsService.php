@@ -12,4 +12,8 @@ class productsService{
     {
         return $this->productRepository->findAll();
     }   
+    public function store($product)
+    {
+        return $this->productRepository->store($product);
+    }
 }

@@ -1,4 +1,4 @@
-<div id="productos">
+<div id="products">
     <div v-for="product in products">
         <h2>{{ product.nombre }}</h2>
         <p>{{ product.descripcion }}</p>
@@ -8,13 +8,14 @@
 </div>
 
 <script>
+
   const { createApp } = Vue
 
   createApp({
     data() {
       return {
-        product:  <?php echo json_encode($products); ?>
+        products:  <?php echo json_encode($products); ?>
       }
     }
-  }).mount('#product')
+  }).mount('#products')
 </script>

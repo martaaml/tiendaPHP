@@ -11,7 +11,8 @@ class Product
     private string $oferta;
     private string $fecha;
     private string $imagen;
-    private bool $borrado;
+    private bool $borrado=false;
+
     public function __construct(
         string $id = null,
         string $categoria_id,

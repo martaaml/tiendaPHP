@@ -7,6 +7,7 @@ use Lib\Router;
     use Controllers\AuthController;
     use Controllers\ErrorController;
 use Controllers\ProductoController;
+use Controllers\CategoriasController;
 
     class Routes{
         public static function index() {
@@ -36,7 +37,21 @@ use Controllers\ProductoController;
             Router::add('GET','/admin',function(){
                 (new AdminController())->index();
             });
+            Router ::add ('POST','/categorias',function(){
+                (new CategoriasController())->store();
+            });
+        Router::add('POST','/productos',function(){
+            (new ProductoController())->store();
+        });
+
         }
+       
+        Router::add('GET','/categorias',function(){
+            (new CategoriasController())->index();
+        });
+
+    
+        
             Router::dispatch();
         }
  }

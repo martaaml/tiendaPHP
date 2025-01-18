@@ -58,7 +58,7 @@ class Category
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'borrado' => $this->borrado
+            'borrado' => false
         ];
     }
 }

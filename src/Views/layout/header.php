@@ -13,7 +13,7 @@
                 <li><a href="<?= BASE_URL ?>login">Iniciar sesión</a></li>
                 <li><a href="<?= BASE_URL ?>register">Registrarse</a></li>
             <?php endif; ?>
-            <a href="">Categorias</a>
+            <a href="   <?= BASE_URL ?>categorias">Categorias</a>
             <a href="<?= BASE_URL ?>">Productos</a>
             <a href="">Carrito</a>
             <?php if (isset($_SESSION['admin'])) : ?>

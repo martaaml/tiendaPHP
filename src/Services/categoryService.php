@@ -2,6 +2,7 @@
 namespace Services;
 use Repositories\categoryRepository;
 
+
 class categoryService{
     protected categoryRepository $categoryRepository;
     function __construct()
@@ -12,4 +13,8 @@ class categoryService{
     {
         return $this->categoryRepository->findAll();
     }   
+    public function store($category)
+    {
+        return $this->categoryRepository->store($category);
+    }
 }   
