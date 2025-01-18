@@ -39,16 +39,16 @@
                 <th>Acciones</th>
             </tr>
             <tr v-for="product in products">
-                <td>{{ products.id }}</td>
-                <td>{{ products.categoria_id }}</td>
-                <td>{{ products.nombre }}</td>
-                <td>{{ products.descripcion }}</td>
-                <td>{{ products.precio }}</td>
-                <td>{{ products.stock }}</td>
-                <td>{{ products.oferta }}</td>
-                <td>{{ products.fecha }}</td>
-                <td>{{ products.imagen }}</td>
-                <td>{{ products.borrado }}</td>
+                <td>{{ product.id }}</td>
+                <td>{{ product.categoria_id }}</td>
+                <td>{{ product.nombre }}</td>
+                <td>{{ product.descripcion }}</td>
+                <td>{{ product.precio }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.oferta }}</td>
+                <td>{{ product.fecha }}</td>
+                <td>{{ product.imagen }}</td>
+                <td>{{ product.borrado }}</td>
                 <td>
                     <button>Editar</button>
                     <button>Eliminar</button>
@@ -57,6 +57,40 @@
             </tr>
         </table>
     </div>
+    <div v-if="verPed">
+        <h2>Gestion de pedidos</h2>
+        <table id="pedidos">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Provincia</th>
+                <th>Localidad</th>
+                <th>Direccion</th>
+                <th>Coste</th>
+                <th>Fecha</th>
+                <th>Hora</th>  
+                <th>Acciones</th>
+            </tr>
+            <tr v-for="pedido in pedidos">
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.nombre }}</td>
+                <td>{{ pedido.email }}</td>
+                <td>{{ pedido.telefono }}</td>
+                <td>{{ pedido.provincia }}</td>
+                <td>{{ pedido.localidad }}</td>
+                <td>{{ pedido.direccion }}</td>
+                <td>{{ pedido.coste }}</td>
+                <td>{{ pedido.estado }}</td>
+                <td>{{ pedido.fecha }}</td>
+                <td>{{ pedido.hora }}</td>
+                <td>
+                    <button>Editar</button>
+                    <button>Eliminar</button>
+                </td>
+            </tr>
+        </table>
 </div>
 
 <script>
@@ -72,6 +106,7 @@
         verPed:false,
         categorias: <?php echo json_encode($categorias); ?>,
         products: <?php echo json_encode($products); ?>
+        pedidos: <?php echo json_encode($pedidos); ?>
       }
     },
     methods: {
