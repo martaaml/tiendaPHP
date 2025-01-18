@@ -1,8 +1,8 @@
 <div id="productos">
     <div v-for="product in products">
-        <h2>{{ products.nombre }}</h2>
-        <p>{{ products.descripcion }}</p>
-        <p>{{ products.precio }}</p>
+        <h2>{{ product.nombre }}</h2>
+        <p>{{ product.descripcion }}</p>
+        <p>{{ product.precio }}</p>
     </div>
 
 </div>
@@ -13,8 +13,8 @@
   createApp({
     data() {
       return {
-        products:  <?php echo json_encode($products); ?>
+        product:  <?php echo json_encode($products); ?>
       }
     }
-  }).mount('#products')
+  }).mount('#product')
 </script>

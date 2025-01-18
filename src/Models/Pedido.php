@@ -43,11 +43,10 @@ class Pedido
     }
 
     //SETTER DEL ID DEL PEDIDO
-    public function setId(?string $id): self
+    public function setId(?string $id): void
     {
         $this->id = $id;
 
-        return $this;
     }
 
     //GETTER DEL ID DEL USUARIO DEL PEDIDO
@@ -57,11 +56,10 @@ class Pedido
     }
 
     //SETTER DEL ID DEL USUARIO DEL PEDIDO
-    public function setUsuarioId(string $usuario_id): self
+    public function setUsuarioId(string $usuario_id): void
     {
         $this->usuario_id = $usuario_id;
 
-        return $this;
     }
 
     //GETTER DEL PROVINCIA DEL PEDIDO
@@ -71,11 +69,10 @@ class Pedido
     }
 
     //SETTER DEL PROVINCIA DEL PEDIDO
-    public function setProvincia(string $provincia): self
+    public function setProvincia(string $provincia): void
     {
         $this->provincia = $provincia;
 
-        return $this;
     }
 
     //GETTER DEL LOCALIDAD DEL PEDIDO
@@ -85,11 +82,10 @@ class Pedido
     }
 
     //SETTER DEL LOCALIDAD DEL PEDIDO
-    public function setLocalidad(string $localidad): self
+    public function setLocalidad(string $localidad): void
     {
         $this->localidad = $localidad;
 
-        return $this;
     }
 
     //GETTER DEL DIRECCION DEL PEDIDO
@@ -99,11 +95,10 @@ class Pedido
     }
 
     //SETTER DEL DIRECCION DEL PEDIDO
-    public function setDireccion(string $direccion): self
+    public function setDireccion(string $direccion): void
     {
         $this->direccion = $direccion;
 
-        return $this;
     }
 
     //GETTER DEL COSTE DEL PEDIDO
@@ -113,11 +108,10 @@ class Pedido
     }
 
     //SETTER DEL COSTE DEL PEDIDO
-    public function setCoste(float $coste): self
+    public function setCoste(float $coste): void
     {
         $this->coste = $coste;
 
-        return $this;
     }
 
     //GETTER DEL ESTADO DEL PEDIDO
@@ -127,11 +121,10 @@ class Pedido
     }
 
     //SETTER DEL ESTADO DEL PEDIDO
-    public function setEstado(string $estado): self
+    public function setEstado(string $estado): void
     {
         $this->estado = $estado;
 
-        return $this;
     }
 
     //GETTER DEL FECHA DEL PEDIDO
@@ -141,11 +134,11 @@ class Pedido
     }
 
     //SETTER DEL FECHA DEL PEDIDO
-    public function setFecha(string $fecha): self
+    public function setFecha(string $fecha): void
     {
         $this->fecha = $fecha;
 
-        return $this;
+
     }
 
     //GETTER DEL HORA DEL PEDIDO
@@ -155,11 +148,11 @@ class Pedido
     }
 
     //SETTER DEL HORA DEL PEDIDO
-    public function setHora(string $hora): self
+    public function setHora(string $hora): void
     {
         $this->hora = $hora;
 
-        return $this;
+
     }
 
     //GETTER DEL BORRADO DEL PEDIDO
@@ -169,11 +162,11 @@ class Pedido
     }
 
     //SETTER DEL BORRADO DEL PEDIDO
-    public function setBorrado(bool $borrado): self
+    public function setBorrado(bool $borrado): void
     {
         $this->borrado = $borrado;
 
-        return $this;
+
     }
     //Metodo fromarray
     public static function fromArray(array $data): Pedido{

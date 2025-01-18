@@ -47,13 +47,14 @@ class AdminController{
             $products=array_map(function($product){
                 return $product->toArray();
             },$products);
+
             $pedidos= $this->pedidosService->allPedidos();
             $pedidos=array_map(function($pedido){
                 return $pedido->toArray();
             },$pedidos);
 
 
-        $this->pages->render('admin/index',['menu'=>$gestion,'categorias'=>$categories, 'products'=>$products,'pedidos'=>$pedidos]);
+        $this->pages->render('admin/index',['menu'=>$gestion,'categorias'=>$categories, 'products'=>$products, 'pedidos'=>$pedidos]);
 
 
     }

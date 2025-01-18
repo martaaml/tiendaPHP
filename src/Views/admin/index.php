@@ -105,8 +105,8 @@
         verProd:false,
         verPed:false,
         categorias: <?php echo json_encode($categorias); ?>,
-        products: <?php echo json_encode($products); ?>
-        pedidos: <?php echo json_encode($pedidos); ?>
+        products: <?php echo json_encode($products); ?>,
+        pedido: <?php echo json_encode($pedido); ?>
       }
     },
     methods: {
