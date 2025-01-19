@@ -38,7 +38,6 @@ class AdminController{
                 'id'=>2
             ]];
             $categories= $this->categoryService->allCategories();
-
             $categories=array_map(function($category){
                 return $category->toArray();
             },$categories);

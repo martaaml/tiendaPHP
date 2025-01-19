@@ -17,7 +17,7 @@ class CategoriasController{
 
     //Funcion para iniciar sesion
     public function index(){
-        $categorias= $this->categoryService->allCategories();
+        $categorias= $this->categoryService->findActive();
         $categorias=array_map(function($categoria){
             return $categoria->toArray();
         },$categorias);
@@ -27,7 +27,22 @@ class CategoriasController{
 
     public function store(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
-            if($_POST['nombre']){
+            if($_POST['nombre'] && $_POST['id']){
+                $id=$_POST['id'];
+                $nombre=$_POST['nombre'];
+                $categoria= Category::fromArray(['id'=>$id,'nombre'=>$nombre]);
+                try{
+                    $this->categoryService->update($categoria);
+                    $_SESSION['success']='Categoria actualizada';
+                    header('Location: '.BASE_URL.'categorias');
+                    return;
+                }
+                catch( PDOException $e){
+                    $_SESSION['error']='Ha surgido un error';
+                    $this->pages->render('categorias/principales');
+                    return;
+                }
+            }else if($_POST['nombre']){
                 $nombre=$_POST['nombre'];
                 $categoria= Category::fromArray(['nombre'=>$nombre]);
                 try{
@@ -50,4 +65,49 @@ class CategoriasController{
         return;
 
     }   
+    public function delete(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            if($_POST['id']){
+                $id=$_POST['id'];
+                $categoria= Category::fromArray(['id'=>$id]);
+                try{
+                    $this->categoryService->delete($categoria);
+                    $_SESSION['success']='Categoria eliminada';
+                    header('Location: '.BASE_URL.'categorias');
+                    return;
+                }catch( PDOException $e){
+                    $_SESSION['error']='Ha surgido un error';
+                    $this->pages->render('categorias/principales');
+                    return;
+                }
+            }else{
+                $_SESSION['error']='Ha surgido un error';
+            }
+        }else{
+            $_SESSION['error']='Ha surgido un error';
+        }
+        
+        return;
+    }
+
+    public function reactive(){
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            if($_POST['id']){
+                $id=$_POST['id'];
+                $categoria= Category::fromArray(['id'=>$id,'borrado'=>false]);
+                try{
+                    $this->categoryService->reactive($categoria);
+                    $_SESSION['success']='Categoria reactivada';
+                    header('Location: '.BASE_URL.'categorias');
+                    return;
+                }catch( PDOException $e){
+                    $_SESSION['error']='Ha surgido un error';
+                    $this->pages->render('categorias/principales');
+                    return;
+                }
+            }else{
+                $_SESSION['error']='Ha surgido un error';
+            }
+        }
+    }
 }

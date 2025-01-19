@@ -43,7 +43,12 @@ use Controllers\CategoriasController;
         Router::add('POST','/productos',function(){
             (new ProductoController())->store();
         });
-
+        Router::add('POST','/categorias/delete',function(){
+            (new CategoriasController())->delete();
+        });
+        Router::add('POST','/categorias/reactive',function(){
+            (new CategoriasController())->reactive();
+        });
         }
        
         Router::add('GET','/categorias',function(){

@@ -4,6 +4,7 @@ use Lib\DataBase;
 use Models\Product;
 use PDOException;
 
+
 class productsRepository
 {
     private DataBase $conection;

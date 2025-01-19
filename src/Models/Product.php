@@ -11,7 +11,7 @@ class Product
     private string $oferta;
     private string $fecha;
     private string $imagen;
-    private bool $borrado=false;
+    private bool $borrado;
 
     public function __construct(
         string $id = null,
@@ -24,7 +24,7 @@ class Product
         string $fecha,
         string $imagen
     ) {
-        $this->id = $id;
+        $this->id = $id??'';
         $this->categoria_id = $categoria_id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
@@ -204,5 +204,13 @@ class Product
             'imagen' => $this->imagen,
             'borrado' => $this->borrado
         ];
+    }
+
+
+
+    //Boton para borrar producto
+    public function delete()
+    {
+        $this->borrado=true;
     }
 }

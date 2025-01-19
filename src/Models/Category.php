@@ -7,11 +7,12 @@ class Category
     private bool $borrado;
     public function __construct(
         string $id = null,
-        string $nombre
+        string $nombre,
+        bool $borrado = false
     ) {
         $this->id = $id;
         $this->nombre = $nombre;
-        $this->borrado = false;
+        $this->borrado = $borrado;
     }
     //GEETER DEL ID
     public function getId(): ?string
@@ -48,7 +49,8 @@ class Category
     public static function fromArray(array $data): Category{
         return new Category(
             id: $data['id']??'',
-            nombre: $data['nombre']??''
+            nombre: $data['nombre']??'',
+            borrado: $data['borrado']??false
         );
     }
 
@@ -58,7 +60,9 @@ class Category
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'borrado' => false
+            'borrado' => $this->borrado
         ];
     }
+
+
 }

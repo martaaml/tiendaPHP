@@ -17,4 +17,19 @@ class categoryService{
     {
         return $this->categoryRepository->store($category);
     }
+    public function update($category)
+    {
+        return $this->categoryRepository->update($category);
+    }
+        public function delete($category)
+    {
+        return $this->categoryRepository->delete($category);
+    }
+    public function findActive()
+    {
+        return $this->categoryRepository->findActive();
+    }
+    public function reactive($category){
+        return $this->categoryRepository->reactive($category);
+    }
 }   
