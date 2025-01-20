@@ -12,7 +12,7 @@ class Product
     private string $fecha;
     private string $imagen;
     private bool $borrado;
-
+   
     public function __construct(
         string $id = null,
         string $categoria_id,
@@ -22,7 +22,9 @@ class Product
         int $stock,
         string $oferta,
         string $fecha,
-        string $imagen
+        string $imagen,
+        bool $borrado = false
+
     ) {
         $this->id = $id??'';
         $this->categoria_id = $categoria_id;
@@ -33,7 +35,7 @@ class Product
         $this->oferta = $oferta;
         $this->fecha = $fecha;
         $this->imagen = $imagen;
-        $this->borrado = false;
+        $this->borrado = $borrado;
     }
     
 

@@ -5,7 +5,8 @@
 use Controllers\AdminController;
 use Lib\Router;
     use Controllers\AuthController;
-    use Controllers\ErrorController;
+use Controllers\CarritoController;
+use Controllers\ErrorController;
 use Controllers\ProductoController;
 use Controllers\CategoriasController;
 
@@ -49,12 +50,23 @@ use Controllers\CategoriasController;
         Router::add('POST','/categorias/reactive',function(){
             (new CategoriasController())->reactive();
         });
+        Router::add('POST','/productos/delete',function(){
+            (new ProductoController())->delete();   
+            });
+        Router::add('POST','/productos/reactive',function(){
+            (new ProductoController())->reactive();   
+            });
         }
        
         Router::add('GET','/categorias',function(){
             (new CategoriasController())->index();
         });
-
+        /*Router::add('POST','/carrito/restar',function(){
+            (new CarritoController())->restar();
+        });*/
+        Router::add('POST','/carrito/sumar',function(){
+            (new CarritoController())->sumar();
+        });
     
         
             Router::dispatch();

@@ -2,35 +2,38 @@
     <div v-for="gestion in menu">
         <button @click="viewMenu(gestion.id)">{{ gestion.title }}</button>
     </div>
-    <div v-if="verCat">
-        <h2>Gestion de categorias</h2>
-        <table id="categorias">
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Borrado</th>
-                <th>Acciones</th>
-            </tr>
-            <tr v-for="categoria in categorias">
-                <td>{{ categoria.id }}</td>
-                <td>{{ categoria.nombre }}</td>
-                <td>{{ categoria.borrado?'Si':'No' }}</td>
-                <td>
-                    <button @click="editarCategoria(categoria)">Editar</button>
-                    <form action="<?= BASE_URL ?>categorias/delete" method="post" v-if = "categoria.borrado == false">
-                        <input type="hidden" name="id" id="id" v-model="categoria.id">
-                        <button type="submit">Eliminar</button>
-                    </form>
-                    <form action="<?= BASE_URL ?>categorias/reactive" method="post" v-if = "categoria.borrado == true">
-                        <input type="hidden" name="id" id="id" v-model="categoria.id">
-                        <button type="submit">Activar</button>
-                    </form>
-
-                </td>
-            </tr>
-        </table>
+    <div v-if="verCat" class="d-flex gap-2">
+        <div class="w-75">
+            <h2>Gestion de categorias</h2>
+            <table id="categorias" class="table table-striped table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Borrado</th>
+                    <th>Acciones</th>
+                </tr>
+                <tr v-for="categoria in categorias">
+                    <td>{{ categoria.id }}</td>
+                    <td>{{ categoria.nombre }}</td>
+                    <td>{{ categoria.borrado?'Si':'No' }}</td>
+                    <td class="d-flex gap-2">
+                        <button @click="editarCategoria(categoria)" class="btn btn-info"><i class="mdi mdi-pencil-outline"></i></button>
+                        <form action="<?= BASE_URL ?>categorias/delete" method="post" v-if="categoria.borrado == false">
+                            <input type="hidden" name="id" id="id" v-model="categoria.id">
+                            <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete-outline"></i></button>
+                        </form>
+                        <form action="<?= BASE_URL ?>categorias/reactive" method="post" v-if="categoria.borrado == true">
+                            <input type="hidden" name="id" id="id" v-model="categoria.id">
+                            <button type="submit" class="btn btn-success"><i class="mdi mdi-reload"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <form action="<?= BASE_URL ?>categorias" method="post">
+            <h2>{{formularioCategoria.id ? 'Editar' : 'Crear nueva'}} categoria</h2>
             <input type="number" name="id" id="id" v-model="formularioCategoria.id" readonly hidden>
+            <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre" required v-model="formularioCategoria.nombre">
             <button type="submit">{{ formularioCategoria.id ? 'Editar' : 'Crear' }}</button>
             <button type="button" v-if="formularioCategoria.id" @click="formularioCategoria={}">Cancelar</button>
@@ -64,25 +67,41 @@
                 <td>{{ product.fecha }}</td>
                 <td>{{ product.imagen }}</td>
                 <td>{{ product.borrado }}</td>
-                <td>
-                    <button>Editar</button>
-                    <button>Eliminar</button>
+                <td class="d-flex gap-2">
+                    <button @click="editarProducto(product)" class="btn btn-info"><i class="mdi mdi-pencil-outline"></i></button>
+                    <form action="<?= BASE_URL ?>productos/delete" method="post" v-if="product.borrado == false">
+                        <input type="hidden" name="id" id="id" v-model="product.id">
+                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete-outline"></i></button>
+                    </form>
+                    <form action="<?= BASE_URL ?>productos/reactive" method="post" v-if="product.borrado == true">
+                        <input type="hidden" name="id" id="id" v-model="product.id">
+                        <button type="submit" class="btn btn-success"><i class="mdi mdi-reload"></i></button>
+                    </form>
                 </td>
 
             </tr>
         </table>
         <form action="<?= BASE_URL ?>productos" method="post">
-            ID: <input type="number" name="id" id="id">
-            ID CATEGORIA: <input type="number" name="categoria_id" id="categoria_id" required>
-            NOMBRE: <input type="text" name="nombre" id="nombre" required>
-            DESCRIPCION: <input type="text" name="descripcion" id="descripcion" required>
-            PRECIO: <input type="float" name="precio" id="precio" required>
-            STOCK: <input type="number" name="stock" id="stock" required>
-            OFERTA: <input type="number" name="oferta" id="oferta" required>
-            FECHA: <input type="date" name="fecha" id="fecha" required>
-            IMAGEN: <input type="text" name="imagen" id="imagen" required>
-            <input type="submit" value="Crear producto">
-        </form>
+        <h2>{{formularioProducto.id ? 'Editar' : 'Crear nuevo'}} producto</h2>
+            <input type="number" name="id" id="id" v-model="formularioProducto.id" readonly hidden>
+            <input type="number" name="categoria_id" id="categoria_id" v-model="formularioProducto.categoria_id">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" required v-model="formularioProducto.nombre">
+            <label for="descripcion">Descripcion</label>
+            <input type="text" name="descripcion" id="descripcion" required v-model="formularioProducto.descripcion">
+            <label for="precio">Precio</label>
+            <input type="number" name="precio" id="precio" required v-model="formularioProducto.precio">
+            <label for="stock">Stock</label>
+            <input type="number" name="stock" id="stock" required v-model="formularioProducto.stock">
+            <label for="oferta">Oferta</label>
+            <input type="number" name="oferta" id="oferta" required v-model="formularioProducto.oferta">
+            <label for="fecha">Fecha</label>
+            <input type="date" name="fecha" id="fecha" required v-model="formularioProducto.fecha">
+            <label for="imagen">Imagen</label> 
+            <input type="text" name="imagen" id="imagen" required v-model="formularioProducto.imagen">
+            <button type="submit">{{ formularioProducto.id ? 'Editar' : 'Crear' }}</button>
+            <button type="button" v-if="formularioProducto.id" @click="formularioProducto={}">Cancelar</button>
+</form>
     </div>
     <div v-if="verPed">
         <h2>Gestion de pedidos</h2>
@@ -96,8 +115,10 @@
                 <th>Localidad</th>
                 <th>Direccion</th>
                 <th>Coste</th>
+                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Hora</th>
+
                 <th>Acciones</th>
             </tr>
             <tr v-for="pedido in pedidos">
@@ -112,7 +133,6 @@
                 <td>{{ pedido.estado }}</td>
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.hora }}</td>
-                <td>
                     <button>Editar</button>
                     <button>Eliminar</button>
                 </td>
@@ -138,7 +158,17 @@
                     formularioCategoria: {
                         id: null,
                         nombre: ''
-                    }
+                    },
+                    formularioProducto: {
+                        id: null,
+                        nombre: '',
+                        descripcion: '',
+                        precio: '',
+                        stock: '',
+                        oferta: '',
+                        fecha: '',
+                        imagen: '',
+                    }   
                 }
             },
             methods: {
@@ -163,7 +193,11 @@
                 },
                 editarCategoria(cat) {
                     this.formularioCategoria = cat;
-                }
+                },
+                editarProducto(prod) {
+                    this.formularioProducto = prod;
+                },
+
             }
         }).mount('#menu_admin')
     </script>
