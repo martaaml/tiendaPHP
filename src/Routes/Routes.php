@@ -67,7 +67,6 @@ use Controllers\CategoriasController;
         Router::add('POST','/carrito/sumar',function(){
             (new CarritoController())->sumar();
         });
-    
         
             Router::dispatch();
         }

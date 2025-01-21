@@ -83,27 +83,27 @@ class ProductoController
 
     public function delete()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
-                $id = $_POST['id'];
-                $product = Product::fromArray(['id' => $id]);
-                try {
-                    $this->productsService->delete($product);
-                    $_SESSION['success'] = 'Producto eliminado';
-                    header('Location: ' . BASE_URL . 'categorias');
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            if($_POST['id']){
+                $id=$_POST['id'];
+                $categoria= Product::fromArray(['id'=>$id]);
+                try{
+                    $this->productsService->delete($categoria);
+                    $_SESSION['success']='Categoria eliminada';
+                    header('Location: '.BASE_URL.'productos');
                     return;
-                } catch (PDOException $e) {
-                    $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('productos/principales');
+                }catch( PDOException $e){
+                    $_SESSION['error']='Ha surgido un error';
+                    $this->pages->render('productos/destacados');
                     return;
                 }
-            } else {
-                $_SESSION['error'] = 'Ha surgido un error';
+            }else{
+                $_SESSION['error']='Ha surgido un error';
             }
-        } else {
-            $_SESSION['error'] = 'Ha surgido un error';
+        }else{
+            $_SESSION['error']='Ha surgido un error';
         }
-
+        
         return;
     }
 

@@ -26,7 +26,7 @@ class Product
         bool $borrado = false
 
     ) {
-        $this->id = $id??'';
+        $this->id = $id;
         $this->categoria_id = $categoria_id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
@@ -208,11 +208,4 @@ class Product
         ];
     }
 
-
-
-    //Boton para borrar producto
-    public function delete()
-    {
-        $this->borrado=true;
-    }
 }

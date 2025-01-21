@@ -42,7 +42,7 @@
     </div>
     <div v-if="verProd">
         <h2>Gestion de productos</h2>
-        <table id="products">
+        <table id="products"class="table table-striped table-hover">
             <tr>
                 <th>Id</th>
                 <th>Categoria_id</th>
@@ -105,7 +105,7 @@
     </div>
     <div v-if="verPed">
         <h2>Gestion de pedidos</h2>
-        <table id="pedidos">
+        <table id="pedidos" class="table table-striped table-hover">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
@@ -138,6 +138,12 @@
                 </td>
             </tr>
         </table>
+        
+        <from action ="pedidos/editar" method="post" id="formularioPedido">
+        <h2>{{formularioProducto.id ? 'Editar' : 'Crear nuevo'}} producto</h2>
+            <input type="hidden" name="estado" value="">
+            <button>Guardar</button>    
+            
     </div>
 
     <script>
@@ -168,7 +174,10 @@
                         oferta: '',
                         fecha: '',
                         imagen: '',
-                    }   
+                    }   ,
+                    formularioPedido: {
+                        estado: '',
+                    }
                 }
             },
             methods: {
@@ -197,7 +206,9 @@
                 editarProducto(prod) {
                     this.formularioProducto = prod;
                 },
-
+               editarPedido(ped) {
+                    this.formularioPedido = ped;
+                },
             }
         }).mount('#menu_admin')
     </script>
