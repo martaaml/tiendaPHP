@@ -15,6 +15,10 @@ use Controllers\CategoriasController;
         Router::add('GET','/',function(){
             (new ProductoController())->index();
         });
+
+        Router::add('GET', '/productos/destacados', function ($id) {
+            (new ProductoController())->index($id);
+        });
         //Router del registro
         Router::add('GET','/register',function(){
             (new AuthController())->register();

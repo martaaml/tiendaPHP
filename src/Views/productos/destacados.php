@@ -1,3 +1,20 @@
+<?php
+// how many records should be displayed on a page?
+$records_per_page = 5;
+// instantiate the pagination object
+$pagination = new Zebra_Pagination();
+// the number of total records is the number of records in the array
+$pagination->records(count($products));
+// records per page
+$pagination->records_per_page($records_per_page);
+// here's the magic: we need to display only the records for the current page
+$products = array_slice(
+    $products,
+    (($pagination->get_page() - 1) * $records_per_page),
+    $records_per_page
+);
+?>
+
 <div id="products" class="products-container">
     <div class="product-card" v-for="product in products">
         <h2>{{ product.nombre }}</h2>

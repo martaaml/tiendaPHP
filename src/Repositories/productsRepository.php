@@ -89,12 +89,14 @@ class productsRepository
             $this->sql->bindValue(":id", $product->getId());
             $this->sql->execute();
             $result = null;
-        } catch (PDOException $e) {
 
+        } catch (PDOException $e) {
+            
             $result = $e->getMessage();
         }
         $this->sql->closeCursor();
         return $result;
+
     }
 
     public function findActive()
