@@ -11,6 +11,7 @@
     <nav style="display: flex; justify-content: center; gap: 10px; background-color: #1e7054; padding: 10px 0;">
         <?php if (isset($_SESSION['user'])) : ?>
             <a href="<?= BASE_URL ?>logout" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Cerrar sesión</a>
+            <a href="<?= BASE_URL ?>pedidos" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Mis pedidos</a>
         <?php else : ?>
             <a href="<?= BASE_URL ?>login" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Iniciar sesión</a>
             <a href="<?= BASE_URL ?>register" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Registrarse</a>
