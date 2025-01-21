@@ -5,16 +5,31 @@ namespace Controllers;
 use Lib\Pages;
 use Services\productsService;
 
+/**
+ * Class CarritoController
+ * @package Controllers
+ * 
+ */
 class CarritoController
 {
     private Pages $pages;
     private productsService $productsService;
+
+    /**
+     * Constructor
+     * 
+     */
     public function __construct()
     {
         $this->pages = new Pages();
         $this->productsService = new productsService();
     }
 
+    /**
+     * Funcion que suma productos a carrito
+     * 
+     * 
+     */
     public function sumar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,6 +59,10 @@ class CarritoController
         }
     }
 
+    /**
+     * Funcion que quita productos a carrito
+     * 
+     */
     public function remover()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -7,7 +7,7 @@ use PDOException;
 class pedidosRepository
 {
     private DataBase $conection;
-    private mixed $sql;
+    private mixed $sql; 
     public function __construct()
     {
         $this->conection = new DataBase();
