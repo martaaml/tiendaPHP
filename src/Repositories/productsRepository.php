@@ -30,6 +30,11 @@ class productsRepository
         }
         return $products;
     }
+
+    /**
+     * 
+     * Funcion
+     */
     public function store($product)
     {
         try {
@@ -54,7 +59,12 @@ class productsRepository
         $this->sql->closeCursor();
         return $result;
     }
-
+    /**
+     * Funcion para actualizar un producto
+     * @param Product $product
+     * 
+     * @return string
+     * */
     public function update($product)
     {
 
@@ -62,15 +72,6 @@ class productsRepository
             $this->sql = $this->conection->prepareSQL(
                 "UPDATE productos SET nombre = :nombre, categoria_id = :categoria_id, descripcion = :descripcion, precio = :precio, stock = :stock, oferta = :oferta, fecha = :fecha, imagen = :imagen WHERE id = :id"
             );
-            $this->sql->bindValue(":nombre", $product->getNombre());
-            $this->sql->bindValue(":id", $product->getId());
-            $this->sql->bindValue(":categoria_id", $product->getCategoriaId());
-            $this->sql->bindValue(":descripcion", $product->getDescripcion());
-            $this->sql->bindValue(":precio", $product->getPrecio());
-            $this->sql->bindValue(":stock", $product->getStock());
-            $this->sql->bindValue(":oferta", $product->getOferta());
-            $this->sql->bindValue(":fecha", $product->getFecha());
-            $this->sql->bindValue(":imagen", $product->getImagen());
             $this->sql->execute();
             $result = null;
         } catch (PDOException $e) {
@@ -80,11 +81,14 @@ class productsRepository
         $this->sql->closeCursor();
         return $result;
     }
+    /**
+     * Funcion para eliminar un producto
+     */
     public function delete($product)
     {
         try {
             $this->sql = $this->conection->prepareSQL(
-                "UPDATE productos SET borrado = 1 WHERE id = :id"
+                "UPDATE productos SET borrado WHERE id = :id"
             );
             $this->sql->bindValue(":id", $product->getId());
             $this->sql->execute();

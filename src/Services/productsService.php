@@ -8,7 +8,7 @@ class productsService{
     {
         $this->productRepository = new productsRepository();
     }
-    public function allProducts()
+    public function findAll()
     {
         return $this->productRepository->findAll();
     }   

@@ -6,10 +6,15 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
+
+
 <header class="container" style="background-color: #f2f2f2; width: 100%; height: 100%;">
-    <h1 style="text-align: center; margin: 0; padding: 20px 0   ;">TIENDA</h1>      
+    <h1 style="text-align: center; margin: 0; padding: 20px 0   ;">MARO SHOP</h1>      
     <nav style="display: flex; justify-content: center; gap: 10px; background-color: #1e7054; padding: 10px 0;">
+
         <?php if (isset($_SESSION['user'])) : ?>
+            <p style="text-align: center; font-size: 18px; color:#f2f2f2">¡Bienvenid@, <?= htmlspecialchars($_SESSION['user']['nombre']) ?>!</p>
+
             <a href="<?= BASE_URL ?>logout" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Cerrar sesión</a>
             <a href="<?= BASE_URL ?>pedidos" style="text-decoration: none; color: white; padding: 10px 20px; background-color: #005f40; border-radius: 5px; text-align: center;">Mis pedidos</a>
         <?php else : ?>

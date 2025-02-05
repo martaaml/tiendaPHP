@@ -9,6 +9,7 @@ use Controllers\CarritoController;
 use Controllers\ErrorController;
 use Controllers\ProductoController;
 use Controllers\CategoriasController;
+use Controllers\PedidoController;
 
     class Routes{
         public static function index() {
@@ -45,9 +46,7 @@ use Controllers\CategoriasController;
             Router ::add ('POST','/categorias',function(){
                 (new CategoriasController())->store();
             });
-        Router::add('POST','/productos',function(){
-            (new ProductoController())->store();
-        });
+   
         Router::add('POST','/categorias/delete',function(){
             (new CategoriasController())->delete();
         });
@@ -61,16 +60,50 @@ use Controllers\CategoriasController;
             (new ProductoController())->reactive();   
             });
         }
-       
+        
         Router::add('GET','/categorias',function(){
             (new CategoriasController())->index();
         });
-        /*Router::add('POST','/carrito/restar',function(){
+        //Router del carrito
+         Router::add('GET','/carrito',function(){
+            (new CarritoController())->index();
+        });
+        Router::add('POST','/carrito/restar',function(){
             (new CarritoController())->restar();
-        });*/
+        });
         Router::add('POST','/carrito/sumar',function(){
             (new CarritoController())->sumar();
         });
+
+        Router::add('POST','/carrito/borrar',function(){
+            (new CarritoController())->borrar();
+        });
+        Router::add('POST','/carrito/reactivar',function(){
+            (new CarritoController())->reactivar();
+        });
+        Router::add('GET','/carrito/carrito',function(){
+            (new CarritoController())->verCarrito();
+        });
+        Router::add('POST','/carrito/carrito',function(){
+            (new CarritoController())->index();
+        });
+
+        Router::add('GET','/pedidos',function(){
+            (new PedidoController())->index();
+        });
+
+        //POST pedidos
+        if(isset($_SESSION['user'])){
+        Router::add('POST','/pedidos',function(){
+            (new PedidoController())->store();
+        });
+        Router::add('POST','/pedidos/delete',function(){
+            (new PedidoController())->delete();
+        });
+        Router::add('POST','/pedidos/reactive',function(){
+            (new PedidoController())->reactive();
+        });
+    }
         
             Router::dispatch();
         }

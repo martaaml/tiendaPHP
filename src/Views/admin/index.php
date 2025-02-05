@@ -42,7 +42,7 @@
     </div>
     <div v-if="verProd">
         <h2>Gestion de productos</h2>
-        <table id="products"class="table table-striped table-hover">
+        <table id="products" class="table table-striped table-hover">
             <tr>
                 <th>Id</th>
                 <th>Categoria_id</th>
@@ -69,6 +69,7 @@
                 <td>{{ product.borrado }}</td>
                 <td class="d-flex gap-2">
                     <button @click="editarProducto(product)" class="btn btn-info"><i class="mdi mdi-pencil-outline"></i></button>
+
                     <form action="<?= BASE_URL ?>productos/delete" method="post" v-if="product.borrado == false">
                         <input type="hidden" name="id" id="id" v-model="product.id">
                         <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete-outline"></i></button>
@@ -82,7 +83,7 @@
             </tr>
         </table>
         <form action="<?= BASE_URL ?>productos" method="post">
-        <h2>{{formularioProducto.id ? 'Editar' : 'Crear nuevo'}} producto</h2>
+            <h2>{{formularioProducto.id ? 'Editar' : 'Crear nuevo'}} producto</h2>
             <input type="number" name="id" id="id" v-model="formularioProducto.id" readonly hidden>
             <input type="number" name="categoria_id" id="categoria_id" v-model="formularioProducto.categoria_id">
             <label for="nombre">Nombre</label>
@@ -97,11 +98,11 @@
             <input type="number" name="oferta" id="oferta" required v-model="formularioProducto.oferta">
             <label for="fecha">Fecha</label>
             <input type="date" name="fecha" id="fecha" required v-model="formularioProducto.fecha">
-            <label for="imagen">Imagen</label> 
+            <label for="imagen">Imagen</label>
             <input type="text" name="imagen" id="imagen" required v-model="formularioProducto.imagen">
             <button type="submit">{{ formularioProducto.id ? 'Editar' : 'Crear' }}</button>
             <button type="button" v-if="formularioProducto.id" @click="formularioProducto={}">Cancelar</button>
-</form>
+        </form>
     </div>
     <div v-if="verPed">
         <h2>Gestion de pedidos</h2>
@@ -133,17 +134,43 @@
                 <td>{{ pedido.estado }}</td>
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.hora }}</td>
-                    <button>Editar</button>
-                    <button>Eliminar</button>
+                <button>Editar</button>
+                <button>Eliminar</button>
                 </td>
             </tr>
         </table>
-        
-        <from action ="pedidos/editar" method="post" id="formularioPedido">
-        <h2>{{formularioProducto.id ? 'Editar' : 'Crear nuevo'}} producto</h2>
-            <input type="hidden" name="estado" value="">
-            <button>Guardar</button>    
-            
+
+        <from action="pedidos/editar" method="post" id="formularioPedido">
+            <h2>{{formularioPedido.id ? 'Editar' : 'Crear nuevo'}} pedido</h2>
+            <input type="text" name="estado" value="">
+            <button>Guardar</button>
+        </from>
+
+    </div>
+
+    <div v-if="regiUser">
+        <table id="usuario" class="table table-striped table-hover">
+
+            <h2>Usuario</h2>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Contraseña</th>
+                <th>Rol</th>
+            </tr>
+
+            <tr v-for="regiUser in regiUsers">
+                <p>Id: {{ regiUsers.id }}</p>
+                <p>Nombre: {{ regiUsers.nombre }}</p>
+                <p>Email: {{ regiUsers.email }}</p>
+                <p>Contraseña: {{ regiUsers.password }}</p>
+                <p>Rol: {{ regiUsers.rol }}</p>
+
+
+        </table>
+
+
     </div>
 
     <script>
@@ -174,7 +201,7 @@
                         oferta: '',
                         fecha: '',
                         imagen: '',
-                    }   ,
+                    },
                     formularioPedido: {
                         estado: '',
                     }
@@ -187,11 +214,13 @@
                             this.verCat = true;
                             this.verProd = false;
                             this.verPed = false;
+                            this.verUsr = false;
                             break;
                         case 1:
                             this.verProd = true;
                             this.verPed = false;
                             this.verCat = false;
+                            this.verUsr = false;
                             break;
                         case 2:
                             this.verPed = true;
@@ -206,7 +235,7 @@
                 editarProducto(prod) {
                     this.formularioProducto = prod;
                 },
-               editarPedido(ped) {
+                editarPedido(ped) {
                     this.formularioPedido = ped;
                 },
             }

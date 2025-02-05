@@ -114,4 +114,6 @@ public function reactive($category)
     $this->sql->closeCursor();
     return $result;
     }
+
+    
 }

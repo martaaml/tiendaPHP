@@ -17,11 +17,12 @@ $products = array_slice(
 
 <div id="products" class="products-container">
     <div class="product-card" v-for="product in products">
-        <h2>{{ product.nombre }}</h2>
+
+        <h2>{{ products.nombre }}</h2>
         <img src="{{ product.imagen }}">
-        <p>{{ product.descripcion }}</p>
-        <p class="stock">{{ product.stock }} en stock</p>
-        <p class="price">{{ product.precio }}€</p>
+        <p>{{ products.descripcion }}</p>
+        <p class="stock">{{ products.stock }} en stock</p>
+        <p class="price">{{ products.precio }}€</p>
         <div class="d-flex gap-2 actions">
             <form action="<?= BASE_URL ?>carrito/restar" method="post">
                 <input type="hidden" name="id" id="id" v-model="product.id">
@@ -34,7 +35,10 @@ $products = array_slice(
             </form>
         </div>
     </div>
+    
 </div>
+<?php
+    $pagination->render();?>
 
 
 <script>

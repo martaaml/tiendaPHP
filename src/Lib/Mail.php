@@ -3,12 +3,13 @@ namespace Lib;
 
 use Error;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 use Lib\PDF;
+use Exception;
 
 Class Mail{
     //Metodo para mandar mail del pedido
+  
 
     public function mandarMail(array $pedido){
 
@@ -19,7 +20,6 @@ try{
     $mail->SMTPAuth = true;
     $mail->Username = $_ENV['SMTP_USERNAME'];
     $mail->Password = $_ENV['SMTP_PASSWORD'];
-    $mail->SMPTSecure=$_ENV['SMTP_SECURE'];
     $mail->Port = $_ENV['SMTP_PORT'];
 
     $mail->setFrom($_ENV['SMTP_EMAIL'], 'MARO STORE');

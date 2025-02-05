@@ -104,7 +104,7 @@ class ProductoController
             $_SESSION['error']='Ha surgido un error';
         }
         
-        return;
+        return; 
     }
 
 

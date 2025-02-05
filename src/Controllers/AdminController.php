@@ -42,12 +42,12 @@ class AdminController{
                 return $category->toArray();
             },$categories);
 
-            $products= $this->productsService->allProducts();
+            $products= $this->productsService->findAll();
             $products=array_map(function($product){
                 return $product->toArray();
             },$products);
 
-            $pedidos= $this->pedidosService->allPedidos();
+            $pedidos= $this->pedidosService->findAll();
             $pedidos=array_map(function($pedido){
                 return $pedido->toArray();
             },$pedidos);
