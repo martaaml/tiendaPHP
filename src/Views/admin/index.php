@@ -40,6 +40,8 @@
 
         </form>
     </div>
+
+    
     <div v-if="verProd">
         <h2>Gestion de productos</h2>
         <table id="products" class="table table-striped table-hover">

@@ -13,22 +13,24 @@ $products = array_slice(
     (($pagination->get_page() - 1) * $records_per_page),
     $records_per_page
 );
+
 ?>
 
 <div id="products" class="products-container">
     <div class="product-card" v-for="product in products">
 
-        <h2>{{ products.nombre }}</h2>
+        <h2>{{ product.nombre }}</h2>
         <img src="{{ product.imagen }}">
-        <p>{{ products.descripcion }}</p>
-        <p class="stock">{{ products.stock }} en stock</p>
-        <p class="price">{{ products.precio }}€</p>
-        <div class="d-flex gap-2 actions">
+        <p>{{ product.descripcion }}</p>
+        <p class="stock">{{ product.stock }} en stock</p>
+        <p class="price">{{ product.precio }}€</p>
+        <div class="d-flex gap-2 actions"> 
             <form action="<?= BASE_URL ?>carrito/restar" method="post">
+
                 <input type="hidden" name="id" id="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-minus"></i></button>
             </form>
-            <p class="cart-quantity">{{ sesion.carrito[product.id] ?? 0 }}</p>
+
             <form action="<?= BASE_URL ?>carrito/sumar" method="post">
                 <input type="hidden" name="id" id="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-plus"></i></button>
@@ -43,7 +45,7 @@ $products = array_slice(
 
 <script>
 
-  const { createApp } = Vue
+  const { createApp } = Vue;
 
   createApp({
     data() {
@@ -137,7 +139,7 @@ $products = array_slice(
 }
 
 .cart-quantity {
-    font-size: 1.2em;
+    font-size: 1.2em;   
     font-weight: bold;
 }
 

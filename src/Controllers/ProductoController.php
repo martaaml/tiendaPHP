@@ -26,6 +26,7 @@ class ProductoController
 
         $this->pages->render('productos/destacados', ['products' => $products]);
     }
+
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
