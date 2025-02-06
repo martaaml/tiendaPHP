@@ -14,15 +14,11 @@ class PedidoController{
     }
 
 
-    //Funcion para iniciar sesion
-    public function index(){
-        $pedidos= $this->pedidosService->findAll();
-        $pedidos=array_map(function($pedido){
-            return $pedido->toArray();
-        },$pedidos);
-
-        $this->pages->render('pedidos/mispedidos',['pedidos'=>$pedidos]);
+    public function index() {
+        $pedidos = $this->pedidosService->findAll(); // Mantiene los pedidos como objetos
+        $this->pages->render('pedidos/mispedidos', ['pedidos' => $pedidos]);
     }
+    
 
     public function store(){
         if($_SERVER['REQUEST_METHOD']==='POST'){

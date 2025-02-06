@@ -98,7 +98,7 @@ use Models\Product;
 
         //POST pedidos
         if(isset($_SESSION['user'])){
-        Router::add('POST','/pedidos',function(){
+        Router::add('POST','/pedidos/mispedidos',function(){
             (new PedidoController())->store();
         });
         Router::add('POST','/pedidos/delete',function(){

@@ -1,5 +1,7 @@
 <?php
 namespace Models;
+use Lib\Validar;
+
 class Pedido
 {
     private string $id;
@@ -198,5 +200,14 @@ class Pedido
             'hora' => $this->hora,
             'borrado' => $this->borrado
         ];
+    }
+
+    public function validarPedido(){
+        $array =["pendiente","enviado"];
+        if (!empty($name) && !Validar::validar_array($name,$array)){
+            $errores['estado'] = "Estado no posible";
+        }
+    
+        return $errores;
     }
 }

@@ -19,7 +19,7 @@ $products = array_slice(
 <div id="products" class="products-container">
     <div class="product-card" v-for="product in products" :key="product.id">
         <h2>{{ product.nombre }}</h2>
-        <img :src="product.imagen" :alt="product.nombre" width="100">
+        <img :src="product.imagen" width="100">
         <p>{{ product.descripcion }}</p>
         <p class="stock">{{ product.stock }} en stock</p>
         <p class="price">{{ product.precio }}€</p>
