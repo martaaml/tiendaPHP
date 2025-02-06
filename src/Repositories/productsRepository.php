@@ -7,15 +7,16 @@ use Models\Product;
 use PDOException;
 use PDO;
 
-
 class productsRepository
 {
     private DataBase $conection;
     private mixed $sql;
+    
     public function __construct()
     {
         $this->conection = new DataBase();
     }
+    
     public function findAll()
     {
         $products = [];
@@ -32,8 +33,7 @@ class productsRepository
     }
 
     /**
-     * 
-     * Funcion
+     * Funcion para almacenar un producto
      */
     public function store($product)
     {
@@ -53,56 +53,78 @@ class productsRepository
             $this->sql->execute();
             $result = null;
         } catch (PDOException $e) {
-
             $result = $e->getMessage();
         }
         $this->sql->closeCursor();
         return $result;
     }
+    
     /**
-     * Funcion para actualizar un producto
+     * Función para actualizar un producto
      * @param Product $product
-     * 
      * @return string
-     * */
+     */
     public function update($product)
     {
-
         try {
+            // Preparamos la consulta para actualizar el producto
             $this->sql = $this->conection->prepareSQL(
-                "UPDATE productos SET nombre = :nombre, categoria_id = :categoria_id, descripcion = :descripcion, precio = :precio, stock = :stock, oferta = :oferta, fecha = :fecha, imagen = :imagen WHERE id = :id"
+                "UPDATE productos SET 
+                    nombre = :nombre, 
+                    categoria_id = :categoria_id, 
+                    descripcion = :descripcion, 
+                    precio = :precio, 
+                    stock = :stock, 
+                    oferta = :oferta, 
+                    fecha = :fecha, 
+                    imagen = :imagen 
+                WHERE id = :id"
             );
+    
+            // Asignamos los valores de las propiedades del producto
+            $this->sql->bindValue(":nombre", $product->getNombre());
+            $this->sql->bindValue(":categoria_id", $product->getCategoriaId());
+            $this->sql->bindValue(":descripcion", $product->getDescripcion());
+            $this->sql->bindValue(":precio", $product->getPrecio());
+            $this->sql->bindValue(":stock", $product->getStock());
+            $this->sql->bindValue(":oferta", $product->getOferta());
+            $this->sql->bindValue(":fecha", $product->getFecha());
+            $this->sql->bindValue(":imagen", $product->getImagen());
+            $this->sql->bindValue(":id", $product->getId()); // Aquí se debe pasar el ID para saber qué producto actualizar
+    
+            // Ejecutamos la consulta
             $this->sql->execute();
             $result = null;
         } catch (PDOException $e) {
-
             $result = $e->getMessage();
         }
+    
         $this->sql->closeCursor();
         return $result;
     }
+    
     /**
-     * Funcion para eliminar un producto
+     * Función para eliminar un producto
      */
     public function delete($product)
     {
+        
         try {
+            // Preparamos la consulta para marcar el producto como borrado
             $this->sql = $this->conection->prepareSQL(
-                "UPDATE productos SET borrado WHERE id = :id"
+                "UPDATE productos SET borrado = 1 WHERE id = :id"
             );
-            $this->sql->bindValue(":id", $product->getId());
+            $this->sql->bindValue(":id", $product->getId()); // Asignamos el ID del producto
             $this->sql->execute();
             $result = null;
-
         } catch (PDOException $e) {
-            
             $result = $e->getMessage();
         }
+    
         $this->sql->closeCursor();
         return $result;
-
     }
-
+    
     public function findActive()
     {
         try {
@@ -116,8 +138,10 @@ class productsRepository
         }
         return $productos;
     }
+
     public function reactive($product)
     {
+
         try {
             $this->sql = $this->conection->prepareSQL(
                 "UPDATE productos SET borrado = 0 WHERE id = :id"
@@ -126,23 +150,26 @@ class productsRepository
             $this->sql->execute();
             $result = null;
         } catch (PDOException $e) {
-
             $result = $e->getMessage();
         }
         $this->sql->closeCursor();
         return $result;
     }
+
     public function findById(int $id)
     {
         try {
             $this->sql = $this->conection->prepareSQL("SELECT * FROM productos WHERE id = :id");
             $this->sql->bindValue(":id", $id);
             $this->sql->execute();
-            $product = $this->sql->fetch(PDO::FETCH_ASSOC) ?: null;
+            $productData = $this->sql->fetch(PDO::FETCH_ASSOC) ?: null;
+            if ($productData) {
+                return Product::fromArray($productData); // Devuelve un objeto Product
+            }
+            return null;
         } catch (PDOException $e) {
-            $product = null;
+            return null;
         }
         $this->sql->closeCursor();
-        return $product;
     }
 }

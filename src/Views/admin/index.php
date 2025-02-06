@@ -71,12 +71,12 @@
                 <td>{{ product.borrado }}</td>
                 <td class="d-flex gap-2">
                     <button @click="editarProducto(product)" class="btn btn-info"><i class="mdi mdi-pencil-outline"></i></button>
-
-                    <form action="<?= BASE_URL ?>productos/delete" method="post" v-if="product.borrado == false">
+                    
+                    <form action="<?= BASE_URL ?>productos/delete" method="POST" v-if="product.borrado == false">
                         <input type="hidden" name="id" id="id" v-model="product.id">
                         <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete-outline"></i></button>
                     </form>
-                    <form action="<?= BASE_URL ?>productos/reactive" method="post" v-if="product.borrado == true">
+                    <form action="<?= BASE_URL ?>productos/reactive" method="POST" v-if="product.borrado == true">
                         <input type="hidden" name="id" id="id" v-model="product.id">
                         <button type="submit" class="btn btn-success"><i class="mdi mdi-reload"></i></button>
                     </form>

@@ -11,6 +11,7 @@ class ProductoController
 {
     private Pages $pages;
     private productsService $productsService;
+
     public function __construct()
     {
         $this->pages = new Pages();
@@ -20,17 +21,15 @@ class ProductoController
     public function index()
     {
         $products = $this->productsService->findActive();
-        $products = array_map(function ($product) {
-            return $product->toArray();
-        }, $products);
-
+        $products = array_map(fn($product) => $product->toArray(), $products);
         $this->pages->render('productos/destacados', ['products' => $products]);
     }
 
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['nombre'] && $_POST['descripcion'] && floatval($_POST['precio'])  && $_POST['stock'] && $_POST['oferta'] && $_POST['fecha'] && $_POST['imagen']&& $_POST['id']) {
+            if (!empty($_POST['nombre']) && !empty($_POST['descripcion']) && isset($_POST['precio']) && is_numeric($_POST['precio']) && !empty($_POST['stock']) && !empty($_POST['oferta']) && !empty($_POST['fecha']) && !empty($_POST['imagen'])) {
+                
                 $categoria_id = $_POST['categoria_id'];
                 $nombre = $_POST['nombre'];
                 $descripcion = $_POST['descripcion'];
@@ -39,95 +38,95 @@ class ProductoController
                 $oferta = $_POST['oferta'];
                 $fecha = $_POST['fecha'];
                 $imagen = $_POST['imagen'];
-                $id = $_POST['id'];
-                $product = Product::fromArray(['categoria_id' => $categoria_id, 'nombre' => $nombre, 'descripcion' => $descripcion, 'precio' => $precio, 'stock' => $stock, 'oferta' => $oferta, 'fecha' => $fecha, 'imagen' => $imagen, 'id' => $id]);
-                try {
-                    $this->productsService->update($product);
-                    $_SESSION['success'] = 'Producto editado';
-                    header('Location: ' . BASE_URL );
-                    return;
-                } catch (PDOException $e) {
-                    $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('productos/principales');
-                    return;
-                }
-            } else if ($_POST['nombre'] && $_POST['descripcion'] && floatval($_POST['precio'])  && $_POST['stock'] && $_POST['oferta'] && $_POST['fecha'] && $_POST['imagen']) {
-                $categoria_id = $_POST['categoria_id'];
-                $nombre = $_POST['nombre'];
-                $descripcion = $_POST['descripcion'];
-                $precio = floatval($_POST['precio']);
-                $stock = $_POST['stock'];
-                $oferta = $_POST['oferta'];
-                $fecha = $_POST['fecha'];
-                $imagen = $_POST['imagen'];
-                $product = Product::fromArray(['categoria_id' => $categoria_id, 'nombre' => $nombre, 'descripcion' => $descripcion, 'precio' => $precio, 'stock' => $stock, 'oferta' => $oferta, 'fecha' => $fecha, 'imagen' => $imagen]);
-                try {
-                    $this->productsService->store($product);
-                    $_SESSION['success'] = 'Producto creado';
-                    header('Location: ' . BASE_URL);
-                    return;
-                } catch (PDOException $e) {
-                    $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('productos/principales');
-                    return;
+
+                $productData = [
+                    'categoria_id' => $categoria_id,
+                    'nombre' => $nombre,
+                    'descripcion' => $descripcion,
+                    'precio' => $precio,
+                    'stock' => $stock,
+                    'oferta' => $oferta,
+                    'fecha' => $fecha,
+                    'imagen' => $imagen
+                ];
+
+                if (!empty($_POST['id'])) {
+                    $productData['id'] = $_POST['id'];
+                    $product = Product::fromArray($productData);
+                    try {
+                        $this->productsService->update($product);
+                        $_SESSION['success'] = 'Producto editado';
+                        header('Location: ' . BASE_URL);
+                        exit;
+                    } catch (PDOException $e) {
+                        $_SESSION['error'] = 'Ha surgido un error';
+                    }
+                } else {
+                    $product = Product::fromArray($productData);
+                    try {
+                        $this->productsService->store($product);
+                        $_SESSION['success'] = 'Producto creado';
+                        header('Location: ' . BASE_URL);
+                        exit;
+                    } catch (PDOException $e) {
+                        $_SESSION['error'] = 'Ha surgido un error';
+                    }
                 }
             } else {
-                $_SESSION['error'] = 'Ha surgido un error';
+                $_SESSION['error'] = 'Faltan datos';
             }
         } else {
-            $_SESSION['error'] = 'Ha surgido un error';
+            $_SESSION['error'] = 'Método inválido';
         }
         $this->pages->render('productos/principales');
-        return;
     }
-
 
     public function delete()
     {
-        if($_SERVER['REQUEST_METHOD']==='POST'){
-            if($_POST['id']){
-                $id=$_POST['id'];
-                $categoria= Product::fromArray(['id'=>$id]);
-                try{
-                    $this->productsService->delete($categoria);
-                    $_SESSION['success']='Categoria eliminada';
-                    header('Location: '.BASE_URL.'productos');
-                    return;
-                }catch( PDOException $e){
-                    $_SESSION['error']='Ha surgido un error';
-                    $this->pages->render('productos/destacados');
-                    return;
-                }
-            }else{
-                $_SESSION['error']='Ha surgido un error';
-            }
-        }else{
-            $_SESSION['error']='Ha surgido un error';
-        }
-        
-        return; 
-    }
-
-
-    public function reactive()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
-                $id = $_POST['id'];
-                $product = Product::fromArray(['id' => $id, 'borrado' => false]);
-                try {
-                    $this->productsService->reactive($product);
-                    $_SESSION['success'] = 'Producto reactivado';
-                    header('Location: ' . BASE_URL . 'categorias');
-                    return;
-                } catch (PDOException $e) {
-                    $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('productos/principales');
-                    return;
+        if (isset($_POST['id'])) {
+            $id = $_POST['id']; 
+            $productService = new \Services\productsService();
+            $product = $productService->findById($id);
+    
+            if ($product) {
+                $result = $productService->delete($product);
+                if ($result === null) {
+                    echo "Producto eliminado correctamente.";
+                } else {
+                    echo "Error al eliminar el producto: " . $result;
                 }
             } else {
-                $_SESSION['error'] = 'Ha surgido un error';
+                echo "Producto no encontrado.";
             }
+        } else {
+            echo "ID del producto no proporcionado.";
         }
     }
+    
+    public function reactive()
+    {
+        if (isset($_POST['id'])) {
+            $id = $_POST['id']; // Obtener el ID desde el formulario o solicitud POST
+            $productService = new \Services\productsService();
+            $product = $productService->findById($id);
+    
+            if ($product) {
+                $result = $productService->reactive($product);
+                if ($result === null) {
+                    echo "Producto reactivado correctamente.";
+                } else {
+                    echo "Error al reactivar el producto: " . $result;
+                }
+            } else {
+                echo "Producto no encontrado.";
+            }
+        } else {
+            echo "ID del producto no proporcionado.";
+        }
+    }
+
+    public function update(){
+        
+    }
+    
 }
