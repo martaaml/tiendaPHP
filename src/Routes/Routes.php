@@ -10,6 +10,7 @@ use Controllers\ErrorController;
 use Controllers\ProductoController;
 use Controllers\CategoriasController;
 use Controllers\PedidoController;
+use Models\Product;
 
     class Routes{
         public static function index() {
@@ -59,6 +60,9 @@ use Controllers\PedidoController;
         Router::add('POST','/productos/reactive',function(){
             (new ProductoController())->reactive();   
             });
+            Router::add('POST','/productos',function(){
+                (new ProductoController())->store();   
+                });
         }
         
         Router::add('GET','/categorias',function(){
@@ -104,7 +108,7 @@ use Controllers\PedidoController;
             (new PedidoController())->reactive();
         });
     }
-        
+
             Router::dispatch();
         }
  }

@@ -17,28 +17,25 @@ $products = array_slice(
 ?>
 
 <div id="products" class="products-container">
-    <div class="product-card" v-for="product in products">
-
+    <div class="product-card" v-for="product in products" :key="product.id">
         <h2>{{ product.nombre }}</h2>
-        <img src="{{ product.imagen }}">
+        <img :src="product.imagen" :alt="product.nombre" width="100">
         <p>{{ product.descripcion }}</p>
         <p class="stock">{{ product.stock }} en stock</p>
         <p class="price">{{ product.precio }}€</p>
-        <div class="d-flex gap-2 actions"> 
-            <form action="<?= BASE_URL ?>carrito/restar" method="post">
-
-                <input type="hidden" name="id" id="id" v-model="product.id">
+        <div class="d-flex gap-2 actions">
+            <form action="/carrito/restar" method="post">
+                <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-minus"></i></button>
             </form>
-
-            <form action="<?= BASE_URL ?>carrito/sumar" method="post">
-                <input type="hidden" name="id" id="id" v-model="product.id">
+            <form action="/carrito/sumar" method="post">
+                <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-plus"></i></button>
             </form>
         </div>
     </div>
-    
 </div>
+
 <?php
     $pagination->render();?>
 

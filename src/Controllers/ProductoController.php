@@ -90,18 +90,12 @@ class ProductoController
     
             if ($product) {
                 $result = $productService->delete($product);
-                if ($result === null) {
-                    echo "Producto eliminado correctamente.";
-                } else {
-                    echo "Error al eliminar el producto: " . $result;
-                }
-            } else {
-                echo "Producto no encontrado.";
-            }
         } else {
             echo "ID del producto no proporcionado.";
         }
     }
+
+}
     
     public function reactive()
     {
@@ -112,18 +106,9 @@ class ProductoController
     
             if ($product) {
                 $result = $productService->reactive($product);
-                if ($result === null) {
-                    echo "Producto reactivado correctamente.";
-                } else {
-                    echo "Error al reactivar el producto: " . $result;
-                }
-            } else {
-                echo "Producto no encontrado.";
             }
-        } else {
-            echo "ID del producto no proporcionado.";
-        }
     }
+}
 
     public function update(){
         
