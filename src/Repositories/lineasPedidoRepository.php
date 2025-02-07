@@ -10,7 +10,7 @@
         private mixed $sql;
         function __construct(){
             $this->conection = new DataBase();
-        }
+        } 
         /**
          * Función para buscar todas las lineas de un pedido
          * 

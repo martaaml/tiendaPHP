@@ -5,7 +5,7 @@
                 <article class="carrito__producto">
                     <div class="carrito__producto__info">
                         <div class="carrito__producto__content">
-                            <img src="<?= BASE_URL . "/subidas/" . $productoCarrito['productos'][0]->getImagen() ?>" 
+                            <img src="<?= BASE_URL . "/ca/" . $productoCarrito['productos'][0]->getImagen() ?>" 
                                  alt="Producto" class="carrito__producto__content__img">
                         </div>
                         <p><b>Nombre:</b> <?= $productoCarrito['productos'][0]->getNombre() ?></p>
@@ -17,13 +17,13 @@
                             <button type="submit">-</button>
                         </form>
                         <p><?= $productoCarrito["unidades"] ?></p>
-                        <form action="<?= BASE_URL ?>carrito/sumar" method="POST" style="display:inline;">
+                        <form action="<?= BASE_URL ?>tiendecita/carrito/sumar" method="POST" style="display:inline;">
                             <input type="hidden" name="id" value="<?= $productoCarrito['id'] ?>">
-                            <button type="submit">+</button>
+                            <button type="submit">+</button> 
                         </form>
                     </div>
                     <div class="carrito__producto__delete">
-                        <form action="<?= BASE_URL ?>carrito/borrar" method="POST">
+                        <form action="<?= BASE_URL ?>tiendecita/carrito/borrar" method="POST">
                             <input type="hidden" name="id" value="<?= $productoCarrito['id'] ?>">
                             <button type="submit">Borrar</button>
                         </form>

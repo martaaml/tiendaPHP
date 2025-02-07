@@ -11,7 +11,6 @@ use PDOException;
 /**
  * Class CarritoController
  * @package Controllers
- * 
  */
 class CarritoController
 {
@@ -19,10 +18,6 @@ class CarritoController
     private productsService $productsService;
     private categoryService $categoryService;
 
-    /**
-     * Constructor
-     * 
-     */
     public function __construct()
     {
         $this->pages = new Pages();
@@ -36,43 +31,37 @@ class CarritoController
     }
 
     /**
-     * Funcion que suma productos a carrito
-     * 
-     * 
+     * Función que suma productos al carrito
      */
     public function sumar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
+            if (isset($_POST['id'])) {
                 if (!isset($_SESSION['carrito'])) {
                     $_SESSION['carrito'] = [];
                 }
                 if (isset($_SESSION['carrito'][$_POST['id']])) {
                     $_SESSION['carrito'][$_POST['id']]++;
                 } else {
-                    $_SESSION['carrito'][$_POST['id']] = 1; //Si no existe le crea uno
+                    $_SESSION['carrito'][$_POST['id']] = 1; // Si no existe, se inicializa en 1
                 }
+
                 $product = $this->productsService->findById($_POST['id']);
-                //Si el stock es 0 o es menor a 0 no se puede sumar
-                if ($product['stock'] == 0 || $product['stock'] - 1< 0) {
+
+                // Si no hay stock suficiente, no se permite la compra
+                if ($product->getStock() == 0 || $product->getStock() - 1 < 0) {
                     $_SESSION['carrito'][$_POST['id']]--;
-                    $_SESSION['error'] = 'No hay stock';
+                    $_SESSION['error'] = 'No hay stock disponible';
                     header('Location: ' . BASE_URL);
                     return;
                 }
-                //Si el stock es menor que el que se suma, se resta 1 al stock
-                if ($product['stock'] - $_SESSION['carrito'][$_POST['id']] < 0) {
-                    $product['stock']--;
-                    $this->productsService->update($product);
-                }
-                //Si el stock es mayor que el que se suma, se resta 1 al stock
-                if ($product['stock'] - $_SESSION['carrito'][$_POST['id']] > 0) {
-                    $product['stock']--;
+
+                // Se reduce el stock en 1 si es válido
+                if ($product->getStock() - $_SESSION['carrito'][$_POST['id']] >= 0) {
+                    $product->setStock($product->getStock() - 1);
                     $this->productsService->update($product);
                 }
 
-                $product['stock']=($product['stock']- $_SESSION['carrito'][$_POST['id']]);
-                $this->productsService->update($product);
                 header('Location: ' . BASE_URL);
                 return;
             }
@@ -80,24 +69,26 @@ class CarritoController
     }
 
     /**
-     * Funcion que quita productos a carrito
-     * 
+     * Función que resta productos del carrito
      */
     public function restar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
+            if (isset($_POST['id'])) {
                 if (!isset($_SESSION['carrito'])) {
                     $_SESSION['carrito'] = [];
                 }
-                if (isset($_SESSION['carrito'][$_POST['id']])) {
+                if (isset($_SESSION['carrito'][$_POST['id']]) && $_SESSION['carrito'][$_POST['id']] > 0) {
                     $_SESSION['carrito'][$_POST['id']]--;
-                    if ($_SESSION['carrito'][$_POST['id']] < 0) {
+
+                    $product = $this->productsService->findById($_POST['id']);
+                    $product->setStock($product->getStock() + 1); // Incrementa el stock
+                    $this->productsService->update($product);
+
+                    if ($_SESSION['carrito'][$_POST['id']] == 0) {
                         unset($_SESSION['carrito'][$_POST['id']]);
                     }
-                    $product = $this->productsService->findById($_POST['id']);
-                    $product['stock']=($product['stock']+ $_SESSION['carrito'][$_POST['id']]);
-                    $this->productsService->update($product);
+
                     header('Location: ' . BASE_URL);
                     return;
                 }
@@ -105,11 +96,13 @@ class CarritoController
         }
     }
 
-
+    /**
+     * Función que borra productos del carrito
+     */
     public function borrar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
+            if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $product = Product::fromArray(['id' => $id]);
                 try {
@@ -119,7 +112,7 @@ class CarritoController
                     return;
                 } catch (PDOException $e) {
                     $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('/carrito');
+                    $this->pages->render('/carrito/carrito');
                     return;
                 }
             } else {
@@ -128,14 +121,15 @@ class CarritoController
         } else {
             $_SESSION['error'] = 'Ha surgido un error';
         }
-
-        return;
     }
 
+    /**
+     * Función que reactiva productos eliminados
+     */
     public function reactivar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($_POST['id']) {
+            if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $product = Product::fromArray(['id' => $id, 'borrado' => false]);
                 try {
@@ -145,7 +139,7 @@ class CarritoController
                     return;
                 } catch (PDOException $e) {
                     $_SESSION['error'] = 'Ha surgido un error';
-                    $this->pages->render('/carrito');
+                    $this->pages->render('/carrito/carrito');
                     return;
                 }
             } else {
@@ -154,31 +148,37 @@ class CarritoController
         }
     }
 
+    /**
+     * Muestra la vista del carrito
+     */
     public function verCarrito()
     {
         $this->pages->render('carrito/carrito');
-        return;
     }
 
-    public function updateStock(){
-        if($_SERVER['REQUEST_METHOD']==='POST'){
-            if($_POST['id']){
-                $id=$_POST['id'];
-                $product= Product::fromArray(['id'=>$id]);
-                try{
+    /**
+     * Actualiza el stock de un producto
+     */
+    public function updateStock()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['id'])) {
+                $id = $_POST['id'];
+                $product = Product::fromArray(['id' => $id]);
+                try {
                     $this->productsService->update($product);
-                    $_SESSION['success']='Stock actualizado';
-                    header('Location: '.BASE_URL.'carrito');
+                    $_SESSION['success'] = 'Stock actualizado';
+                    header('Location: ' . BASE_URL . 'carrito');
                     return;
-                }catch( PDOException $e){
-                    $_SESSION['error']='Ha surgido un error';
-                    $this->pages->render('carrito/carrito   ');
+                } catch (PDOException $e) {
+                    $_SESSION['error'] = 'Ha surgido un error';
+                    $this->pages->render('carrito/carrito');
                     return;
                 }
-            }else{
-                $_SESSION['error']='Ha surgido un error';
+            } else {
+                $_SESSION['error'] = 'Ha surgido un error';
             }
         }
     }
-
 }
+    

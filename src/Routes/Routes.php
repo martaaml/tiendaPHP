@@ -82,9 +82,7 @@ use Models\Product;
         Router::add('POST','/carrito/borrar',function(){
             (new CarritoController())->borrar();
         });
-        Router::add('POST','/carrito/reactivar',function(){
-            (new CarritoController())->reactivar();
-        });
+     
         Router::add('GET','/carrito/carrito',function(){
             (new CarritoController())->verCarrito();
         });

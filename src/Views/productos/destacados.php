@@ -24,11 +24,11 @@ $products = array_slice(
         <p class="stock">{{ product.stock }} en stock</p>
         <p class="price">{{ product.precio }}€</p>
         <div class="d-flex gap-2 actions">
-            <form action="/carrito/restar" method="post">
+            <form action="tiendecita/carrito/restar" method="post">
                 <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-minus"></i></button>
             </form>
-            <form action="/carrito/sumar" method="post">
+            <form action="tiendecita/carrito/sumar" method="post">
                 <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-plus"></i></button>
             </form>
