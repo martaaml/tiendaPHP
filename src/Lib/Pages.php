@@ -7,6 +7,12 @@ namespace Lib;
  */
 class Pages
 {
+
+    /**
+     * Función para renderizar una página
+     * 
+     * @param string $pageName nombre de la página a renderizar
+     */
     public function render(string $pageName, array $params = null): void
     {
         if ($params != null) {

@@ -136,8 +136,8 @@
                 <td>{{ pedido.estado }}</td>
                 <td>{{ pedido.fecha }}</td>
                 <td>{{ pedido.hora }}</td>
-                <button>Editar</button>
-                <button>Eliminar</button>
+                <td><button class="btn btn-info"><i class="mdi mdi-pencil-outline"></i></button></td>
+                <td><button class="btn btn-danger"><i class="mdi mdi-delete-outline"></i></button></td>
                 </td>
             </tr>
         </table>
@@ -168,8 +168,6 @@
                 <p>Email: {{ regiUsers.email }}</p>
                 <p>Contraseña: {{ regiUsers.password }}</p>
                 <p>Rol: {{ regiUsers.rol }}</p>
-
-
         </table>
 
 

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <body>
-<?php
+    <?php
+    /*Se incluye el archivo de configuración*/
     require_once '../src/init.php';
-?>  
+    ?>

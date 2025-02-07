@@ -31,4 +31,14 @@
 
     </nav>
 </header>
+<?php if (isset($_SESSION['success'])) : ?>
+    <div class="alert alert-success" role="alert">
+        <?= htmlspecialchars($_SESSION['success']) ?>
+    </div>
+    <?php 
+    $_SESSION['success']=NULL;
+
+    header("Refresh: 5")
+    ?>
+<?php endif; ?>
     <main>  

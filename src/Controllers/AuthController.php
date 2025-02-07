@@ -57,7 +57,7 @@ use PDOException;
             header('Location: '.BASE_URL);
         }
     }
-    
+    // Funcion para registrar un usuario
     public function register(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
             if($_POST['data']){

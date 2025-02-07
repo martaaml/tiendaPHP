@@ -14,6 +14,11 @@ class categoryRepository
         $this->conection = new DataBase();
 
     }
+
+    /**
+     * Funcion para obtener todos los productos
+     * 
+     */
     public function findAll()
     {
         $categories = [];
@@ -29,6 +34,9 @@ class categoryRepository
         return $categories;
     }
 
+    /**
+     * Funcion para almacenar un producto
+     */
     public function store($category)
     {
         try {
@@ -47,6 +55,9 @@ class categoryRepository
         $this->sql->closeCursor();
         return $result;
     }
+    /**
+     * Función para actualizar un producto
+     */
     public function update($category)
     {
         try {
@@ -65,6 +76,10 @@ class categoryRepository
         $this->sql->closeCursor();
         return $result;
     }
+
+    /**
+     * Función para borrar un producto
+     */
     public function delete($category)
     {
         try {
@@ -84,6 +99,9 @@ class categoryRepository
 
     }
 
+    /**
+     * Funcion para obtener todos los productos activos
+     */
     public function findActive()
     {
         try {
@@ -97,6 +115,11 @@ class categoryRepository
         }
         return $categorias;
     }
+
+
+    /**
+     * Funcion para reactivar un producto
+     */
 public function reactive($category)
 {
     try {

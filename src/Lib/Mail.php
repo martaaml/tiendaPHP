@@ -1,4 +1,5 @@
 <?php
+
 namespace Lib;
 
 use Error;
@@ -7,41 +8,40 @@ use PHPMailer\PHPMailer\SMTP;
 use Lib\PDF;
 use Exception;
 
-Class Mail{
-    //Metodo para mandar mail del pedido
-  
-
-    public function mandarMail(array $pedido){
+class Mail
+{
+    //Funcion para mandar mail del pedido
+    public function mandarMail(array $pedido)
+    {
 
         $mail = new PHPMailer();
+        try {
+       
+            $mail->isSMTP();
+            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->SMTPAuth = true;
+            $mail->Port = 2525;
+            $mail->Username = '5c40b816a1b64e';
+            $mail->Password = '3b882c184c1894';
+            $mail->addAddress($_SESSION['user']['email']);
+            $mail->Subject = 'Tu pedido ha sido confirmado';
 
-try{
-    $mail->isSMTP();
-    $mail->SMTPAuth = true;
-    $mail->Username = $_ENV['SMTP_USERNAME'];
-    $mail->Password = $_ENV['SMTP_PASSWORD'];
-    $mail->Port = $_ENV['SMTP_PORT'];
+            //Generar contenido del mail
+            $pdf = new PDF();
+            $ruta = $pdf->generarPDF();
 
-    $mail->setFrom($_ENV['SMTP_EMAIL'], 'MARO STORE');
-    $mail->addAddress($_SESSION['user']['email']);+
-    $mail->Subject = 'Tu pedido ha sido confirmado';
+            $mail->isHTML(true);
+            $mail->Body = $_SESSION['user']['nombre'] . ' ha realizado un pedido de tienda';
 
-    //Generar contenido del mail
-    $pdf = new PDF();
-    $pdf->generarPDF($pedido);
-    $mail->isHTML(true);
-    $mail->Body = $pedido['nombre'].' ha realizado un pedido de tienda';
+            //Añadir archivo PDF
+            $mail->addAttachment($ruta);
 
-    //Añadir archivo PDF
-    $mail->addAttachment($pdf->generarPDF($pedido));
-
-    //Enviar mail
-    $mail->send();
-    return true;
-}catch(Exception $e){
-    error_log($e->getMessage());
-    return false;
-}
-
+            //Enviar mail
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 }

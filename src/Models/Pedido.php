@@ -4,7 +4,7 @@ use Lib\Validar;
 
 class Pedido
 {
-    private string $id;
+    private  $id;
     private string $usuario_id;
     private string $provincia;
     private string $localidad;
@@ -15,7 +15,7 @@ class Pedido
     private string $hora;
     private bool $borrado;
     public function __construct(
-        string $id = null,
+        $id = null,
         string $usuario_id,
         string $provincia,
         string $localidad,

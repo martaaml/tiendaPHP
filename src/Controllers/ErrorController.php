@@ -2,6 +2,10 @@
 
 namespace Controllers;
 
+/**
+ * Clase de controlador para manejar errores
+ * @package Controllers
+ */
 class ErrorController
 {
     public static function show_err404()

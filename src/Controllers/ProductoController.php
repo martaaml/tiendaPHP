@@ -7,6 +7,11 @@ use Services\productsService;
 use Models\Product;
 use PDOException;
 
+/**
+ * Clase de controlador para manejar productos
+ * @package Controllers
+ */
+
 class ProductoController
 {
     private Pages $pages;
@@ -18,6 +23,13 @@ class ProductoController
         $this->productsService = new productsService();
     }
 
+
+    /**
+     * Función para mostrar los productos
+     * @return void
+     * 
+     */
+
     public function index()
     {
         $products = $this->productsService->findActive();
@@ -25,6 +37,11 @@ class ProductoController
         $this->pages->render('productos/destacados', ['products' => $products]);
     }
 
+    /**
+     * Función para almacenar un producto   
+     * @return void
+     * 
+     */
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -81,15 +98,25 @@ class ProductoController
         $this->pages->render('productos/principales');
     }
 
+    /**
+     * Función para borrar un producto  
+     * @param int $id
+     * @return void
+     * 
+     */
     public function delete()
     {
         if (isset($_POST['id'])) {
             $id = $_POST['id']; 
             $productService = new \Services\productsService();
             $product = $productService->findById($id);
+
     
             if ($product) {
                 $result = $productService->delete($product);
+                $_SESSION['success'] = 'Producto eliminado';
+                header('Location: ' . BASE_URL);
+                return;
         } else {
             echo "ID del producto no proporcionado.";
         }
@@ -97,6 +124,11 @@ class ProductoController
 
 }
     
+    /**
+     * Función para reactivar un producto
+     * @return void
+     * 
+     */
     public function reactive()
     {
         if (isset($_POST['id'])) {
@@ -106,12 +138,52 @@ class ProductoController
     
             if ($product) {
                 $result = $productService->reactive($product);
+                $_SESSION['success'] = 'Producto reactivado';
+                header('Location: ' . BASE_URL);
+                return;
             }
     }
-}
+}  
 
-    public function update(){
-        
+
+/**
+ * Función para actualizar un producto
+ * @return void
+ * 
+ */
+public function update(){
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $producto = $this->productsService->findById($id);
+
+        if (!$producto) {
+            $_SESSION['error'] = 'El producto no existe';
+            header('Location: ' . BASE_URL . 'carrito');
+            return;
+        }
+
+        // Renderiza la vista de edición con el producto seleccionado
+        $this->pages->render('carrito/editar', ['producto' => $producto]);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['id'], $_POST['cantidad']) && is_numeric($_POST['cantidad'])) {
+            $id = $_POST['id'];
+            $cantidad = intval($_POST['cantidad']);
+
+            if ($cantidad <= 0) {
+                $_SESSION['error'] = 'La cantidad debe ser mayor a 0';
+                header("Location: " . BASE_URL . "carrito/editar?id=$id");
+                return;
+            }
+
+            // Actualiza la cantidad en la sesión del carrito
+            $_SESSION['carrito'][$id] = $cantidad;
+
+            $_SESSION['success'] = 'Producto actualizado correctamente';
+            header('Location: ' . BASE_URL . 'carrito');
+            return;
+        } else {
+            $_SESSION['error'] = 'Error en la actualización';
+        }
     }
-    
+}
 }

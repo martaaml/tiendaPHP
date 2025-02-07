@@ -13,13 +13,15 @@ $products = array_slice(
     (($pagination->get_page() - 1) * $records_per_page),
     $records_per_page
 );
-
 ?>
 
 <div id="products" class="products-container">
     <div class="product-card" v-for="product in products" :key="product.id">
         <h2>{{ product.nombre }}</h2>
-        <img :src="product.imagen" width="100">
+        <?php if (!empty($product->imagen)): ?>
+        <img src="<?= BASE_URL ?>/public/img/<?= htmlspecialchars($product->imagen) ?>" width="100">
+        <?php endif; ?>
+
         <p>{{ product.descripcion }}</p>
         <p class="stock">{{ product.stock }} en stock</p>
         <p class="price">{{ product.precio }}€</p>
@@ -28,6 +30,7 @@ $products = array_slice(
                 <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-minus"></i></button>
             </form>
+            {{sesion.carrito[product.id]??0}}
             <form action="tiendecita/carrito/sumar" method="post">
                 <input type="hidden" name="id" v-model="product.id">
                 <button class="btn btn-primary"><i class="mdi mdi-plus"></i></button>

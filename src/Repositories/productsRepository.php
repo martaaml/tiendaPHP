@@ -124,6 +124,10 @@ class productsRepository
         $this->sql->closeCursor();
         return $result;
     }
+
+    /**
+     * Funcion para obtener todos los productos activos
+     */
     
     public function findActive()
     {
@@ -138,7 +142,10 @@ class productsRepository
         }
         return $productos;
     }
-
+    
+    /**
+     * Funcion para reactivar un producto
+     */
     public function reactive($product)
     {
 
@@ -156,6 +163,10 @@ class productsRepository
         return $result;
     }
 
+
+    /**
+     * Funcion para obtener un producto por su id
+     */
     public function findById(int $id)
     {
         try {

@@ -5,7 +5,10 @@ use Services\categoryService;
 use Models\Category;
 use PDOException;
 
-
+/**
+ * Class CategoriasController
+ * @package Controllers
+ */
 class CategoriasController{
     private Pages $pages;
     private categoryService $categoryService;
@@ -25,6 +28,12 @@ class CategoriasController{
         $this->pages->render('categorias/principales',['categorias'=>$categorias]);
     }
 
+
+    /**
+     * Función para almacenar una categoria
+     * @return void
+     * 
+     */
     public function store(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
             if($_POST['nombre'] && $_POST['id']){
@@ -65,6 +74,11 @@ class CategoriasController{
         return;
 
     }   
+
+
+    /**
+     * Función para borrar una categoria
+     */
     public function delete(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
             if($_POST['id']){
@@ -90,6 +104,11 @@ class CategoriasController{
         return;
     }
 
+
+    /**
+     * Funcion para reactivar una categoria
+     * 
+     */
     public function reactive(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
             if($_POST['id']){

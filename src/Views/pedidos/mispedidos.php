@@ -2,15 +2,19 @@
     <?php if(isset($pedidos) && !empty($pedidos)) : ?>
         <?php foreach ($pedidos as $pedido) : ?>
             <form action="<?= BASE_URL ?>detalle_pedido" method="post">
-                <article class="carrito__producto">
-                    <p>Fecha pedido: <?= htmlspecialchars($pedido->getFecha()) ?></p>
-                    <p>Precio Total: <?= htmlspecialchars($pedido->getCoste()) ?> €</p>
+                <article class="carrito__producto" >
+                    <table class="table table-striped table-hover">
+                        <tr>
+                    <td>Fecha pedido: <?= htmlspecialchars($pedido->getFecha()) ?></td>
+                    <td>Precio Total: <?= htmlspecialchars($pedido->getCoste()) ?> €</td>
                     <div>
-                        <p>Dirección: <?= htmlspecialchars($pedido->getDireccion()) ?></p>
-                        <p>Provincia: <?= htmlspecialchars($pedido->getProvincia()) ?></p>
+                        <td>Dirección: <?= htmlspecialchars($pedido->getDireccion()) ?></td>
+                        <td>Provincia: <?= htmlspecialchars($pedido->getProvincia()) ?></td>
                     </div>
-                    <p>Estado: <?= htmlspecialchars($pedido->getEstado()) ?></p>
-                    <button type="submit" name="detalle" value="<?= htmlspecialchars($pedido->getId()) ?>">Ver Detalle</button>
+                    <td>Estado: <?= htmlspecialchars($pedido->getEstado()) ?></td>
+                   
+                    </tr>
+                    </table>
                 </article>
             </form>
 

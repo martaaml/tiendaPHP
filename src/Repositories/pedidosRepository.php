@@ -3,7 +3,7 @@ namespace Repositories;
 use Lib\DataBase;
 use Models\Pedido;
 use PDOException;
-
+use PDO;
 class pedidosRepository
 {
     private DataBase $conection;
@@ -12,6 +12,8 @@ class pedidosRepository
     {
         $this->conection = new DataBase();
     }
+
+    /*Funcion para obtener todos los pedidos*/
     public function findAll()
     {
         $pedidos = [];
@@ -26,15 +28,33 @@ class pedidosRepository
         }
         return $pedidos;
     }
+    /*Funcion para obtener los pedidos del usuario logueado*/
+    public function mios()
+    {
+        $pedidos = [];
+        try {
+            $this->sql=$this->conection->prepareSQL("SELECT * FROM pedidos where usuario_id = :id");
+            $this->sql->bindValue(":id", $_SESSION['user']['id']);
+            $this->sql->execute();
+            $pedidosData = $this->sql->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($pedidosData as $pedidoData) {
+                $pedidos[] = Pedido::fromArray($pedidoData);
+            }
+        } catch (PDOException $e) {
+            $pedidos = null;
+        }
+        return $pedidos;
+    }
+
+
+    /*Funcion para almacenar un pedido*/
     public function store($pedido)
     {
         try {
             $this->sql = $this->conection->prepareSQL(
-                "INSERT INTO pedidos(nombre,email,telefono,provincia,localidad,direccion,coste,estado,fecha,hora,borrado) VALUES (:nombre,:email,:telefono,:provincia,:localidad,:direccion,:coste,:estado,:fecha,:hora,:borrado)"
+                "INSERT INTO pedidos(usuario_id,provincia,localidad,direccion,coste,estado,fecha,hora) VALUES (:usuario_id,:provincia,:localidad,:direccion,:coste,:estado,:fecha,:hora)"
             );
-            $this->sql->bindValue(":nombre", $pedido->getNombre());
-            $this->sql->bindValue(":email", $pedido->getEmail());
-            $this->sql->bindValue(":telefono", $pedido->getTelefono());
+            $this->sql->bindValue(":usuario_id", $pedido->getUsuarioId());;
             $this->sql->bindValue(":provincia", $pedido->getProvincia());
             $this->sql->bindValue(":localidad", $pedido->getLocalidad());
             $this->sql->bindValue(":direccion", $pedido->getDireccion());
@@ -42,9 +62,9 @@ class pedidosRepository
             $this->sql->bindValue(":estado", $pedido->getEstado());
             $this->sql->bindValue(":fecha", $pedido->getFecha());
             $this->sql->bindValue(":hora", $pedido->getHora());
-            $this->sql->bindValue(":borrado", 0);
             $this->sql->execute();
-            $result = null;
+            //Coger el ultimo resultado insertado
+            $result = $this->conection->lastInsertId();
         } catch (PDOException $e) {
 
             $result = $e->getMessage();
@@ -52,6 +72,8 @@ class pedidosRepository
         $this->sql->closeCursor();
         return $result;
     }
+
+    /*Funcion para actualizar un pedido*/
     public function update($pedido)
     {
         try {
@@ -67,6 +89,8 @@ class pedidosRepository
         $this->sql->closeCursor();
         return $result;
     }
+
+    /*Funcion para borrar un pedido*/
     public function delete($pedido)
     {
         try {
@@ -85,6 +109,8 @@ class pedidosRepository
         return $result;
 
     }
+
+    /*Funcion para obtener los pedidos activos*/
     public function findActive()
     {
         $pedidos = [];
@@ -100,6 +126,7 @@ class pedidosRepository
         return $pedidos;
     }   
 
+    /*Funcion para obtener un pedido*/
     public function ver(int $id)
     {
         $pedido = null;

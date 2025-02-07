@@ -7,7 +7,9 @@ use Services\productsService;
 use Services\categoryService;
 use Models\Product;
 use PDOException;
-
+use Lib\Mail;
+use Models\Pedido;
+use Services\pedidosService;
 /**
  * Class CarritoController
  * @package Controllers
@@ -27,7 +29,14 @@ class CarritoController
 
     public function index()
     {
-        $this->pages->render('carrito/carrito');
+        $productosCarrito=[];
+   
+        foreach ($_SESSION['carrito'] as $key => $value) {
+            $keyParseada = intval($key);
+            $productosCarrito[$key]['product'] = $this->productsService->findById($keyParseada);
+            $productosCarrito[$key]['cantidad'] = $value;
+        }
+        $this->pages->render('carrito/carrito',['productosCarrito' => $productosCarrito]);
     }
 
     /**
@@ -61,7 +70,7 @@ class CarritoController
                     $product->setStock($product->getStock() - 1);
                     $this->productsService->update($product);
                 }
-
+              
                 header('Location: ' . BASE_URL);
                 return;
             }
@@ -153,7 +162,7 @@ class CarritoController
      */
     public function verCarrito()
     {
-        $this->pages->render('carrito/carrito');
+        $this->pages->render('carrito/carrito',['productosCarrito' => $_SESSION['carrito']]);
     }
 
     /**
@@ -180,5 +189,61 @@ class CarritoController
             }
         }
     }
+
+    /** 
+    * Función que muestra el pedido
+    */
+
+    public function pedido(){
+        foreach ($_SESSION['carrito'] as $key => $value) {
+            $keyParseada = intval($key);
+            $productosCarrito[$key]['product'] = $this->productsService->findById($keyParseada);
+            $productosCarrito[$key]['cantidad'] = $value;
+        }
+        $total = 0;
+        foreach ($productosCarrito as $producto) {
+         if(isset($producto['product'])){
+            
+            $total += floatval($producto['product']->getPrecio()) * floatval($producto['cantidad']);
+          
+        $_SESSION['coste'] = $total;
+
+        $_SESSION['hora']=date("H:i:s");
+
+        $pedido =  Pedido::fromArray([
+          'usuario_id' => $_SESSION['user']['id'],
+          'provincia' => $_POST['provincia'],
+          'localidad' => $_POST['localidad'],
+          'direccion' => $_POST['direccion'],
+          'coste' => $_SESSION['coste'],
+          'estado' => 'pendiente',
+          'fecha' => date("Y-m-d"),
+          'hora' => date("H:i:s")
+
+        ]   );
+
+        $pedidoService = new pedidosService();
+      $pedidoGuardado =  $pedidoService->store($pedido);
+        $_SESSION['pedido_id']=$pedidoGuardado;
+    
+        try {
+            $mail=new Mail();
+          $pedidoArray=$pedido->toArray();
+            $mail->mandarMail($pedidoArray);
+            $_SESSION['success'] = 'Pedido enviado';
+            $_SESSION['carrito']=[];
+          
+            header('Location: ' . BASE_URL);
+            return;
+
+        } catch (PDOException $e) {
+            $_SESSION['error'] = 'Ha surgido un error';
+        }
+    }else{
+        $_SESSION['error'] = 'Ha surgido un error';
+    }
+
+    }
+}
 }
     
